@@ -49,6 +49,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// 设置静态文件夹，将vue打包文件放在这里
 app.use(express.static(path.join(__dirname, process.env.public_dir || "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
