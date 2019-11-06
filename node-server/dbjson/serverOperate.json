@@ -1,0 +1,7 @@
+[{
+  "desc":"更新dbjson",
+  "cmd":"updateDbJson"
+},{
+  "desc":"开启服务器",
+  "cmd":"startServer"
+}]

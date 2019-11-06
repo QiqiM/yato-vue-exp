@@ -1,0 +1,24 @@
+{
+  "apps":[
+    {
+      "name": "www",
+      "script": "./bin/www",
+      "watch": true,
+      "env_prod": {
+        "PORT": 80,
+	    "public_dir":"public",
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "www-admin",
+      "script": "./bin/www",
+      "watch": true,
+      "env_prod": {
+        "PORT": 3001,
+	    "public_dir":"admin",
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}

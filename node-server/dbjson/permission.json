@@ -1,0 +1,9 @@
+[{
+  "account":"admin",
+  "actions":["updateDbJson"],
+  "projects":["chaoshen"]
+},{
+  "account":"test",
+  "actions":["updateDbJson"],
+  "projects":["chaoshen"]
+}]

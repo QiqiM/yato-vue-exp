@@ -1,0 +1,135 @@
+[
+    {
+        "key": "admin",
+        "name": "admin",
+        "description": "Super Administrator. Have access to view all pages.",
+        "routes": [
+            {
+                "path": "/permission",
+                "alwaysShow": true,
+                "name": "Permission",
+                "children": [
+                    {
+                        "path": "page",
+                        "name": "PagePermission"
+                    },
+                    {
+                        "path": "directive",
+                        "name": "DirectivePermission"
+                    },
+                    {
+                        "path": "role",
+                        "name": "RolePermission"
+                    }
+                ]
+            },
+            {
+                "path": "/",
+                "name": "转让审核",
+                "children": [
+                    {
+                        "path": "/",
+                        "name": "转让审核"
+                    }
+                ]
+            },
+            {
+                "path": "/purchaselist",
+                "name": "求购审核",
+                "children": [
+                    {
+                        "path": "/purchaselist",
+                        "name": "purchaselist",
+                        "meta": {
+                            "title": "求购审核",
+                            "icon": "documentation"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "g1",
+        "name": "g1",
+        "description": "g1",
+        "routes": [
+            {
+                "path": "/",
+                "name": "salelist",
+                "children": [
+                    {
+                        "path": "index",
+                        "name": "salelist"
+                    },
+                    {
+                        "path": "purchaselist",
+                        "name": "purchaselist"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "g2",
+        "name": "g2",
+        "description": "g2",
+        "routes": [
+            {
+                "path": "/permission",
+                "alwaysShow": true,
+                "name": "权限管理",
+                "children": [
+                    {
+                        "path": "user",
+                        "name": "用户管理"
+                    },
+                    {
+                        "path": "role",
+                        "name": "角色管理"
+                    }
+                ]
+            },
+            {
+                "path": "/",
+                "name": "转让审核",
+                "children": [
+                    {
+                        "path": "",
+                        "name": "转让审核"
+                    }
+                ]
+            },
+            {
+                "path": "/purchaselist",
+                "name": "求购审核",
+                "children": [
+                    {
+                        "path": "",
+                        "name": "求购审核"
+                    }
+                ]
+            },
+            {
+                "path": "/trades",
+                "name": "转让列表",
+                "children": [
+                    {
+                        "path": "",
+                        "name": "转让列表"
+                    }
+                ]
+            },
+            {
+                "path": "/notes",
+                "name": "商务合作",
+                "children": [
+                    {
+                        "path": "",
+                        "name": "商务合作"
+                    }
+                ]
+            }
+        ]
+    }
+]
