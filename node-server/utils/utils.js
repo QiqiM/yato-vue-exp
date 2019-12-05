@@ -55,7 +55,7 @@ utils.resolveSql = function (fields, value) {
 };
 
 
-utils.encrypt = function (key, val="") {
+utils.encrypt = function (key, val) {
     let t = crypto.createHash("md5");
     t.update(key);
     t.update(val);

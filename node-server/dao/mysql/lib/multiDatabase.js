@@ -1,30 +1,30 @@
 /**
  * Created by Administrator on 2017/11/21.
  */
-var utils = require('../../../utils/utils');
-var Database = require("./database");
-var sqlParser = require("./sqlParser");
-var async = require("async");
+const utils = require('../../../utils/utils');
+const Database = require("./database");
+const sqlParser = require("./sqlParser");
+const async = require("async");
 
-var multiDatabase = function(){
-    this.dblst = [];
+const multiDatabase = function(){
+    this.dblist = [];
     this.useTableIndex = {};
 };
 
 multiDatabase.prototype.init = function(options, cb){
-    var self = this;
+    let self = this;
 
     if(!Array.isArray(options)){
         options = [options];
     }
-    for(var i =0; i < options.length; i++){
+    for(let i =0; i < options.length; i++){
         options[i].index = i;
     }
-    var dblst =  this.dblst = new Array(options.length);
+    let dblist =  this.dblist = new Array(options.length);
     async.map(options,function(config, done){
-        var i = config.index;
-        var db = new Database();
-        dblst[i] = db;
+        let i = config.index;
+        let db = new Database();
+        dblist[i] = db;
         db.init(config,done);
     },function(err){
         utils.invokeCallback(cb,err);
@@ -35,20 +35,20 @@ multiDatabase.prototype.getDb = function(table){
     if(!this.useTableIndex[table]){
         this.useTableIndex[table] = 1;
     }
-    var len = this.dblst.length;
-    for(var i = 0; i < len; i ++){
-        var index = this.useTableIndex[table] % len;
+    let len = this.dblist.length;
+    for(let i = 0; i < len; i ++){
+        let index = this.useTableIndex[table] % len;
         this.useTableIndex[table] ++;
-        if(this.dblst[index].isReady()){
-            return this.dblst[index];
+        if(this.dblist[index].isReady()){
+            return this.dblist[index];
         }
     }
     return null;
 };
 
 multiDatabase.prototype.execStr = function(str,values,cb){
-    var table = sqlParser.getVirtualTableName(str);
-    var db = this.getDb(table);
+    let table = sqlParser.getVirtualTableName(str);
+    let db = this.getDb(table);
     if(!db){
         utils.invokeCallback(cb, new Error("database unready!"));
         return;
@@ -57,8 +57,8 @@ multiDatabase.prototype.execStr = function(str,values,cb){
 };
 
 multiDatabase.prototype.query = function(str, cb){
-    var table = sqlParser.getVirtualTableName(str);
-    var db = this.getDb(table);
+    let table = sqlParser.getVirtualTableName(str);
+    let db = this.getDb(table);
     if(!db){
         utils.invokeCallback(cb, new Error("database unready!"));
         return;

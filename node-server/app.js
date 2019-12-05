@@ -1,103 +1,83 @@
+const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const bodyParser = require("body-parser");
-const logger = require('morgan');
-const session = require("express-session");
-const MemoryStore = require('memorystore')(session);
-const multipart = require('connect-multiparty');
-const createError = require('http-errors');
-const DbJson = require("./modules/dbjson");
-const appLogger = require("./utils/logger").appLog;
-const indexRouter = require('./routes/index');
-const configRouter = require("./routes/config");
-const enterpriseRouter = require("./routes/enterpise");
-const dbConfig = require("./config/db");
+const bodyParse = require('body-parser');
+// const logger = require('morgan');
+const appLogger = require("./utils/logger")("app");
+const mysqlConfig = require("./config/mysql.json");
+const mongodbConfig = require("./config/mongodb.json");
 const mysql = require("./dao/mysql/index").mysql;
-const usersRouter = require('./routes/user');
-const permissionRouter = require("./routes/permission");
-const authRouter = require("./routes/auth");
+const mongodb = require("./dao/mongodb")
+const routes = require('./routes/index')
+
+// const indexRouter = require('./routes/index');
+// const usersRouter = require('./routes/users');
+
 const app = express();
 
-
-
-const ArrayFileStorage = require("./module/fileStorage");
-const UserMgr = require("./ctrl/userMgr");
-const Permission = require("./ctrl/permission");
-
-
-
-app.set("role", new ArrayFileStorage("role.json"));
-app.set("permission", new ArrayFileStorage("permission.json"));
-app.userMgr = new UserMgr(app);
-Permission.instance.init(app);
-
-
-app.dbJson = new DbJson();
-mysql.init(dbConfig.mysql, function (err) {
-    if(err){
-        appLogger.error("mysql init error, stack:%j", err.stack);
-    }else
-        app.userMgr.createDefaultAdmin().then(res =>{
-            appLogger.info("mysql init success!");
-        }).catch(err =>{
-            appLogger.error("createDefaultAdmin error, stack:%j", err.stack);
-        })
+mysql.init(mysqlConfig.mysql, function (err) {
+  if(err){
+    appLogger.error("mysql init error, stack:%j", err.stack);
+  }else
+    appLogger.info("mysql init success!");
 });
 
-app.use(logger('dev'));
+mongodb.initMongodbConns('business',mongodbConfig["business"])
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
 
-// 设置静态文件夹，将vue打包文件放在这里
-app.use(express.static(path.join(__dirname, process.env.public_dir || "public")));
-app.use(bodyParser.json());
-app.use(bodyParser.raw());
-app.use(bodyParser.urlencoded({ extended: true  }));
-app.use(multipart());
-app.use(session({
-    store: new MemoryStore({ checkPeriod: 86400000 }),
-    resave: true,
-    saveUninitialized: true,
-    secret: 'uwotm8' }));
 
+// 跨域设置
 app.all('*', function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization,\'Origin\',Accept,X-Requested-With');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('X-Powered-By', ' 3.2.1');
-    res.header('Content-Type', 'application/json;charset=utf-8');
-    if (req.method === 'OPTIONS') {
-        res.sendStatus(200);
-    } else {
-        next();
-    }
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization,\'Origin\',Accept,X-Requested-With');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('X-Powered-By', ' 3.2.1');
+  res.header('Content-Type', 'application/json;charset=utf-8');     // 设置了此项，模板引擎使用会有影响
+  if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+  } else {
+      next();
+  }
 });
 
-app.use('/', permissionRouter);
-app.use('/', indexRouter);
-app.use('/user', usersRouter);
-app.use('/config', configRouter);
-app.use('/enterprise', enterpriseRouter);
-app.use('/auth', authRouter);
+
+app.use(async (req, res, next) => {
+  let start = new Date()
+  await next()
+  let ms = new Date() - start
+  appLogger.info(`${req.method} ${req.originalUrl} -- ${res.statusCode} - ${ms}ms`)
+})
+
+// app.use('/', indexRouter);
+// app.use('/users', usersRouter);
+routes(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    next(createError(404));
+  next(createError(404));
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    // render the error page
-    res.status(err.status || 500);
-    appLogger.error("path:%j",req.path);
-    appLogger.error(err.stack);
-    res.send(err.stack);
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  appLogger.error("path:%j",req.path);
+  appLogger.error(err.stack);
+  res.render('error');
 });
 
 module.exports = app;

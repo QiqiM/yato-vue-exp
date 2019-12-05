@@ -22,7 +22,6 @@ cooperation.insert = function(data,cb){
 };
 
 cooperation.queryAll = function (cb) {
-
     db.query(SQL.QUERY_ALL,function(err,res){
         utils.invokeCallback(cb,err,res);
     });

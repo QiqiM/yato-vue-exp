@@ -1,0 +1,8 @@
+{
+    "business":{
+        "mongoConns": "127.0.0.1:27017",
+        "database": "lobby",
+        "user":"lobby",
+        "password":"zhuqueauh5"
+    }
+}

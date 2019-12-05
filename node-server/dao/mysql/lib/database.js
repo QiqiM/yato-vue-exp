@@ -1,27 +1,28 @@
 /**
  * Created by Administrator on 2017/11/21.
  */
-var connection      = require('./connection');
-var multiConn       = require("./multiConnection");
+const connection      = require('./connection');
+const multiConn       = require("./multiConnection");
 
-var utils = require('../../../utils/utils');
-var util            = require("util");
-var sqlParser = require("./sqlParser");
-var Emitter         = require("events").EventEmitter;
-var async = require("async");
-var exp = module.exports;
-var conn = null;
-var _options = {
+const utils = require('../../../utils/utils');
+const util            = require("util");
+const sqlParser = require("./sqlParser");
+const Emitter         = require("events").EventEmitter;
+const async = require("async");
+
+const exp = module.exports;
+const conn = null;
+const _options = {
     reconnect: true,
     reconnectInterval: 3000
 }
 
-var DB_STATE = {
+const DB_STATE = {
     READY:0,
     UNREADY:1
 };
 
-var database = function(){
+const database = function(){
     Emitter.call(this);
     this.state = DB_STATE.UNREADY;
     this.conn = null;

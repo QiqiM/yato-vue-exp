@@ -1,21 +1,22 @@
 {
-  "name": "server",
+  "name": "express01",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "async": "^3.1.0",
     "body-parser": "^1.19.0",
-    "connect-multiparty": "^2.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "express-session": "^1.16.2",
-    "file-stream-rotator": "^0.4.1",
-    "http-errors": "latest",
-    "memorystore": "^1.6.1",
+    "file-stream-rotator": "^0.5.5",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "log4js": "^6.1.0",
+    "mongoose": "^5.7.13",
     "morgan": "~1.9.1",
     "mysql": "^2.17.1"
   }

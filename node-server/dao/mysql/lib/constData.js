@@ -2,7 +2,7 @@
  * Created by zwp on 2015/10/7.
  */
 
-var exp = module.exports;
+const exp = module.exports;
 
 /**
  * SQL TOKEN

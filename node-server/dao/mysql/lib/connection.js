@@ -2,21 +2,22 @@
  * Created by zwp on 2015/11/7.
  */
 
-var logger          = require('../../../utils/logger').appLog;
-var mysql           = require('mysql');
-var emitter         = require("events").EventEmitter;
-var util            = require("util");
-var PING_INTERVAL_TIME = 30000;
-var RECONNECT_DELAY  = 30 * 1000;
+const logger          = require('../../../utils/logger')("app");
+const mysql           = require('mysql');
+const emitter         = require("events").EventEmitter;
+const util            = require("util");
+const PING_INTERVAL_TIME = 30000;
+const RECONNECT_DELAY  = 30 * 1000;
+
 /**
  * @param {opts} opts
  */
-var CONN_STATE = {
+const CONN_STATE = {
     READY:0,
     UNREADY:1
 };
 
-var connection = function(opts) {
+const connection = function(opts) {
     emitter.call(this);
     opts = opts || {};
     this.dbConfig = {};
@@ -36,14 +37,14 @@ util.inherits(connection,emitter);
 
 
 module.exports = connection;
-var pro = connection.prototype;
+let pro = connection.prototype;
 
 /**
  * connect
  * @param
  */
 pro.connect = function(cb) {
-    var self = this;
+    let self = this;
     this.state = CONN_STATE.UNREADY;
     if (!!this.conn){
         cb(new Error('mysql had connected!!!'));
@@ -67,7 +68,6 @@ pro.connect = function(cb) {
         self.emit("connect");
     });
 
-    var self = this;
     this.conn.on('end', function(err){
         logger.fatal('mysql db end, error: %j, code: %j', err.message, err.code);
         self.conn.end();
@@ -88,6 +88,7 @@ pro.connect = function(cb) {
             self.emit("destroy");
         }
     });
+
     this.conn.connect(function(err){
         if (err){
             cb(new Error(err.message));
@@ -146,7 +147,7 @@ pro.getConnection = function(cb){
     }
     if (!this.conn){
         logger.debug('try to connect mysql db...');
-        var self = this;
+        let self = this;
         this.connect(function(err){
             if (err){
                 cb(null);

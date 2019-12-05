@@ -2,10 +2,10 @@
  * Created by zwp on 2015/10/7.
  */
 
-var logger          = require("../../../utils/logger").appLog;
-var constData       = require('./constData');
+const logger          = require("../../../utils/logger")("app");
+const constData       = require('./constData');
 
-var exp = module.exports;
+const exp = module.exports;
 
 /**
  * sub string between
@@ -13,15 +13,15 @@ var exp = module.exports;
 exp.subStrBetween = function(strSql, beginStr, endStr, trim){
     try {
         trim = trim || true;
-        var strTemp = strSql.toLowerCase();
+        let strTemp = strSql.toLowerCase();
         beginStr = beginStr.toLowerCase();
         endStr = endStr.toLowerCase();
-        var bIndex = strTemp.indexOf(beginStr);
+        let bIndex = strTemp.indexOf(beginStr);
         if (-1 === bIndex)
             return null;
 
         bIndex = bIndex + beginStr.length;
-        var eIndex = strSql.indexOf(endStr);
+        let eIndex = strSql.indexOf(endStr);
         if (-1 === eIndex)
             return null;
 
@@ -41,8 +41,8 @@ exp.subStrBetween = function(strSql, beginStr, endStr, trim){
  */
 exp.getVirtualTableName = function(strSql){
     try {
-        var tbName = null;
-        var sqlToken = strSql.split(/\s+/, 1)[0];
+        let tbName = null;
+        let sqlToken = strSql.split(/\s+/, 1)[0];
         sqlToken = sqlToken.toLowerCase();
         switch (sqlToken){
             case constData.SQL_TOKEN.SELECT:{
