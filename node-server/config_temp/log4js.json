@@ -33,21 +33,21 @@
                 "app",
                 "console"
             ],
-            "level": "info"
+            "level": "debug"
         },
         "gm": {
             "appenders": [
                 "gm",
                 "console"
             ],
-            "level":"info"
+            "level":"debug"
         },
         "app": {
             "appenders": [
                 "app",
                 "console"
             ],
-            "level":"info"
+            "level":"debug"
         }
     }
 }
