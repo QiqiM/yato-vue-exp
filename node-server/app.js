@@ -15,11 +15,6 @@ const routes = require('./routes/index')
 // const usersRouter = require('./routes/users');
 
 const app = express();
-appLogger.error("test error");
-appLogger.debug("test debug");
-appLogger.warn("test warn");
-appLogger.fatal("test fatal");
-appLogger.trace("test trace");
 
 mysql.init(mysqlConfig.mysql, function (err) {
   if(err){
