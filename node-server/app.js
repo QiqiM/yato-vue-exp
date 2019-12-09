@@ -32,7 +32,7 @@ app.set('view engine', 'jade');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // 跨域设置
@@ -41,7 +41,7 @@ app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization,\'Origin\',Accept,X-Requested-With');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header('Access-Control-Allow-Credentials', true);
-  res.header('X-Powered-By', ' 3.2.1');
+  res.header('X-Powered-By', 'express 3.2.1');
   res.header('Content-Type', 'application/json;charset=utf-8');     // 设置了此项，模板引擎使用会有影响
   if (req.method === 'OPTIONS') {
       res.sendStatus(200);
