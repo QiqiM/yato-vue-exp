@@ -25,11 +25,8 @@ router.get('/list', function (req, res, next) {
 });
 
 router.post('/addUser', function (req, res, next) {
-  gmLog.info(`req.body to here`)
-  gmLog.info("req.body : %j", req.body)
-
-  let newUser = new daoUser.getModel()(req.body);
-  newUser.save(function(err,data){
+  let user = new daoUser.getModel()(req.body);
+  user.save(function(err,data){
     if(err){
       gmLog.warn("db user save err!")
       res.send({code: constCode.FAIL, data: err.message});
