@@ -1,14 +1,13 @@
-const constCode = module.exports;
+const exp = module.exports;
 
-
-constCode.OK = 0;
-constCode.FAIL = 1;
+exp.OK = 0;
+exp.FAIL = 1;
 
 // require login
-constCode.PERMISSION_DENIED = 50008;
+exp.LOGIN = {
+    PERMISSION_DENIED: 50008,
+    AUTH_FAIL: 6001,
+    AUTH_ERROR: 6002,
+}
 
-constCode.AUTH_FAIL = 6001;
-
-constCode.AUTH_ERROR = 60204;
-
-constCode.NOT_FIND_TASK = 70001;
+exp.NOT_FIND_TASK = 70001;

@@ -16,12 +16,13 @@ const routes = require('./routes/index')
 
 const app = express();
 
-mysql.init(mysqlConfig.mysql, function (err) {
-  if(err){
-    appLogger.error("mysql init error, stack:%j", err.stack);
-  }else
-    appLogger.info("mysql init success!");
-});
+// 暂不使用
+// mysql.init(mysqlConfig.mysql, function (err) {
+//   if(err){
+//     appLogger.error("mysql init error, stack:%j", err.stack);
+//   }else
+//     appLogger.info("mysql init success!");
+// });
 
 mongodb.initMongodbConns('business',mongodbConfig["business"])
 
@@ -32,6 +33,13 @@ app.set('view engine', 'jade');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(bodyParse());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParse.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParse.json())
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
