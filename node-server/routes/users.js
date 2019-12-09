@@ -9,7 +9,6 @@ const constCode = require("../consts/constCode")
 /* GET users listing. */
 router.get('/list', function (req, res, next) {
   daoUser.getModel().findAll(function (err, data) {
-    gmLog.info(`res ${data} type ${typeof data} keys ${Object.keys(data)}`);
     res.send({
       code: constCode.OK,
       data: Object.keys(data).map(key => 
@@ -26,6 +25,7 @@ router.get('/list', function (req, res, next) {
 
 router.post('/addUser', function (req, res, next) {
   let user = new daoUser.getModel()(req.body);
+  gmLog.info("add user userInfo: %j", req.body);
   user.save(function(err,data){
     if(err){
       gmLog.warn("db user save err!")
