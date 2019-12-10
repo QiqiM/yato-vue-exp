@@ -17,10 +17,6 @@ userSchema.statics.findByUsernameAndPwd = function (username, pwd, cb) {
     this.findOne({ username: username, password: pwd }, cb)
 }
 
-userSchema.statics.findAll = function (cb) {
-    this.find({}, cb)
-}
-
 let _model;
 let getModel = function () {
     if (!_model)
