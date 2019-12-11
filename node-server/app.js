@@ -46,8 +46,8 @@ app.use(bodyParse.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(jwt({ secret: constType.SECRET }).unless({
   path: [
-    '/api/login',
-    '/api/register'
+    '/user/login',
+    '/user/register'
   ]
 }));
 

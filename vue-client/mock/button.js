@@ -99,5 +99,15 @@ const result = {
           }
         }
       },
+      {
+        url: '/button/remove',
+        type: 'post',
+        response: config => {
+          return {
+            code:0
+          }
+        }
+      },
+      
   ]
   

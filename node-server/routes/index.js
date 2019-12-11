@@ -3,5 +3,5 @@ const common = require("./common")
 
 module.exports = function (app){
   app.use("/",common);
-  app.use("/api",users);
+  app.use("/user",users);
 };
