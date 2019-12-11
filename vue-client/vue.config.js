@@ -1,3 +1,13 @@
+const defaultSettings = require('./src/settings.js')
+const name = defaultSettings.title || 'vue Permission Admin' // page title
+
+// If your port is set to 80,
+// use administrator privileges to execute the command line.
+// For example, Mac: sudo npm run
+// You can change the port by the following method:
+// port = 9527 npm run dev OR npm run dev --port = 9527
+const port = process.env.port || process.env.npm_config_port || 9527 // dev port
+
 module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
         ? '/'
@@ -7,8 +17,13 @@ module.exports = {
     assetsDir: 'static',
     filenameHashing: true,
 
+    // 删除eslint配置
+    // chainWebpack: config => {
+    //     config.module.rules.delete('eslint');
+    // },
+
     // eslint-loader 是否在保存的时候检查
-    lintOnSave: true,
+    lintOnSave: false,
 
     // 是否使用包含运行时编译器的Vue核心的构建
     runtimeCompiler: false,
@@ -29,6 +44,12 @@ module.exports = {
     // All options for webpack-dev-server are supported
     // https://webpack.js.org/configuration/dev-server/
     devServer: {
+        port: port,
+        open: true,
+        overlay: {
+            warnings: false,
+            errors: true
+        },
 
         disableHostCheck: true,
 
@@ -42,12 +63,19 @@ module.exports = {
         //
         //     hotOnly: false,
         //
-        proxy: `http://127.0.0.1:3000/`,
-
-
-        //
-        //     before: app => {
-        //     }
+        proxy: {
+            // change xxx-api/login => mock/login
+            // detail: https://cli.vuejs.org/config/#devserver-proxy
+            [process.env.VUE_APP_BASE_API]: {
+                // target: `http://localhost:3000`,
+                target: `http://127.0.0.1:${port}/mock`,
+                changeOrigin: true,
+                pathRewrite: {
+                    ['^' + process.env.VUE_APP_BASE_API]: ''
+                }
+            }
+        },
+        after: require('./mock/mock-server.js')
     },
     // 构建时开启多进程处理 babel 编译
     parallel: require('os').cpus().length > 1,

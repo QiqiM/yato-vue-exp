@@ -1,24 +1,18 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <test01 />
+    <router-view />
   </div>
 </template>
 
 <script>
-import test01 from './views/test/test01.vue'
-
 export default {
-  name: 'app',
-  components: {
-    test01
-  }
-}
+  name: "app"
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
