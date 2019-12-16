@@ -242,8 +242,6 @@ const result = {
           code:0
         }
       }
-    },
-  
-
+    }
   ]
   

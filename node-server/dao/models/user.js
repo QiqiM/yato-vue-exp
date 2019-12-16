@@ -7,10 +7,13 @@ const Schema = mongoose.Schema;
 
 // 创建Schema
 const userSchema = new Schema({
-    username: { type: String },
+    username: { type: String, unique: true },   // unique 以此字段为唯一索引
     password: { type: String },
     email: { type: String },
-    role: { type: String }
+    phone: { type: String },
+    state: { type: Boolean },
+    role: { type: Array },
+    createTime: { type: Date, default: Date.now }
 }, { collation: "user", versionKey: false, bufferCommands: false, usePushEach: true });
 
 userSchema.statics.findByUsernameAndPwd = function (username, pwd, cb) {

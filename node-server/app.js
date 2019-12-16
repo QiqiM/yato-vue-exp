@@ -47,10 +47,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(jwt({ secret: constType.SECRET }).unless({
   path: [
     '/user/login',
-    '/user/register'
-  ]
+    '/user/register',
+    '/apidoc*'
+    ]
 }));
 
+//  生成apidoc命令
+//  apidoc -i routes/ -o public/apidoc/
 
 // 跨域设置
 app.all('*', function (req, res, next) {
@@ -81,6 +84,7 @@ routes(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+  appLogger.error("To 404 Error");
   next(createError(404));
 });
 

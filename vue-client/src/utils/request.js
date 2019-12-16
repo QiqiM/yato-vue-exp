@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
@@ -20,13 +21,14 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      // config.headers['X-Token'] = getToken()
+      config.headers['authorization'] = 'Bearer ' + getToken()
     }
     return config
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    console.log("requset error : %j",error) // for debug
     return Promise.reject(error)
   }
 )
@@ -79,6 +81,23 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     })
+
+    if (error && error.response) {
+      switch (error.response.status) {
+        case 404:
+          console.log("To 404")
+          router.push('/404');
+          
+          // error.message = '请求出错(404)'
+          break;
+        case 401:
+          router.push('/401');
+          //  error.message = '服务器错误(500)';
+          break;
+       
+        default: error.message = `连接出错(${error.response.status})!`;
+      }
+    }
     return Promise.reject(error)
   }
 )

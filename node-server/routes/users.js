@@ -27,6 +27,30 @@ router.get('/list', function (req, res) {
   })
 });
 
+/**
+ * 
+ * @api {post} /user/login
+ * @apiDescription 用户登录
+ * @apiName login
+ * @apiGroup user
+ * @apiParam {string} username 用户名
+ * @apiParam {string} password 密码
+ * @apiParam {string} state 状态
+ * @apiParam {string} email 邮箱
+ * @apiSuccess {json} result
+ * @apiSuccessExample {json} Success-Response:
+ *  {
+ *      "code" : "0",
+ *      "data" : {
+ *          "user" : {
+ *                  "username": username
+ *                },
+ *          "token" : "xxx"
+ *      }
+ *  }
+ * @apiSampleRequest http://localhost:3000/user/login
+ * @apiVersion 1.0.0
+ */
 router.post('/login', function (req, res) {
   let username = req.body.username
   let password = req.body.password
@@ -51,12 +75,42 @@ router.post('/login', function (req, res) {
 
     res.json({
       code: constCode.OK,
-      user: data,
-      token: token
+      data:{user: data, token: token}
     })
   })
 });
 
+/**
+ * 
+ * @api {post} /user/register
+ * @apiDescription 用户注册
+ * @apiName register
+ * @apiGroup user
+ * @apiVersion  1.0.0
+ * @apiParam  {String} username 用户名
+ * @apiParam  {String} password 密码
+ * @apiParam  {String} email 邮箱
+ * @apiParam  {String} state 状态
+ * @apiParam  {String} role 角色
+ * 
+ * @apiSuccess {json} result
+ * 
+ * @apiParamExample  {type} Request-Example:
+ *  {
+ *      "username" : "yato",
+ *      "password" : "123456"
+ *      "email" : "yato@qq.com"
+ *      "state" : true
+ *      "role" : "admin"
+ * }
+ * @apiSampleRequest http://localhost:3000/user/register
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     code: 0
+ *     data: {}
+ * }
+ * 
+ */
 router.post('/register', function (req, res) {
   if(!req.body.username || !req.body.password){
     return res.send({ code: constCode.PARAM_ERROR});
@@ -68,6 +122,7 @@ router.post('/register', function (req, res) {
     password: password,
     email: req.body.email || "",
     role: req.body.role || "",
+    state: req.body.state || true
   };
 
   let user = new daoUser.getModel()(info);
@@ -82,7 +137,35 @@ router.post('/register', function (req, res) {
   });
 })
 
-router.get("/profile", function (req, res) {
+/**
+ * 
+ * @api {get} /user/info
+ * @apiDescription 查找用户信息
+ * @apiName info
+ * @apiGroup user
+ * @apiVersion  1.0.0
+ * @apiParam  {String} username 用户名
+ * 
+ * @apiSuccess {json} result
+ * 
+ * @apiParamExample  {type} Request-Example:
+ *  {
+ *      "username" : "yato",
+ * }
+ * @apiSampleRequest http://localhost:3000/user/info
+ * @apiSuccessExample {type} Success-Response:
+ * {
+ *     code: 0
+ *     data: {
+        username: "yato",
+        role: ["admin"],
+        createTime: "2019-12-16T02:11:41.398Z",
+        email: "test@qq.com"
+      }
+ * }
+ * 
+ */
+router.get("/info", function (req, res) {
   let username = req.query.username;
 
   daoUser.getModel().findOne({ username: username}, function (err, data) {
@@ -93,7 +176,12 @@ router.get("/profile", function (req, res) {
 
     res.json({
       code: constCode.OK,
-      user: data
+      data: {
+        username: data.username,
+        role: data.role,
+        createTime: data.createTime,
+        email: data.email
+      }
     })
   })
 })
