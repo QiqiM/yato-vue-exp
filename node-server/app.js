@@ -49,7 +49,7 @@ app.use(jwt({ secret: constType.SECRET }).unless({
     '/user/login',
     '/user/register',
     '/apidoc*'
-    ]
+  ]
 }));
 
 // 跨域设置
@@ -66,7 +66,6 @@ app.all('*', function (req, res, next) {
     next();
   }
 });
-
 
 app.use(async (req, res, next) => {
   let start = new Date()
@@ -97,5 +96,18 @@ app.use(function (err, req, res, next) {
   appLogger.error(err.stack);
   res.render('error');
 });
+
+process.on('uncaughtException', (err) => {
+  appLogger.fatal('app Caught uncaught expception: ' + err.stack);
+});
+
+process.on('unhandledRejection', error => {
+  appLogger.fatal('app Caught unhandledRejection', error.message || error.stack);
+  // process.exit(1)  // To exit with a 'failure' code ,暂不退出
+});
+
+process.on('exit', (code) => {
+  appLogger.warn('app exit with code: %d', code)
+})
 
 module.exports = app;

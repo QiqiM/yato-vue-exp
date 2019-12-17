@@ -1,6 +1,8 @@
 const crypto = require("crypto");
-
+const appLog = require("../utils/logger")("app")
+const constCode = require('../consts/constCode')
 const utils = module.exports;
+
 
 
 /**
@@ -84,4 +86,12 @@ utils.matcherOne = function (arr, key, val, valueKey) {
 
 utils.random = function (len) {
     return Math.floor(Math.random() * len);
+}
+
+utils.respErrorHandle = function(err, resp){
+    appLog.error('process requset has error :%j',err.stack);
+    resp.json({
+        code: constCode.FAIL,
+        data: { msg: '系统错误' }
+    })
 }

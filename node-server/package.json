@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "async": "^3.1.0",
+    "await-to-js": "^2.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
@@ -27,15 +28,15 @@
   "apidoc": {
     "title": "yato-vue-express接口文档",
     "url": "http://localhost:3000",
-    "template":{
+    "template": {
       "forceLanguage": "zh_cn",
       "withGenerator": true,
       "withCompare": true,
-      "jQueryAjaxSetup":{
-        "headers":{
+      "jQueryAjaxSetup": {
+        "headers": {
           "X-HB-Client-Type": "ayb-ios",
           "X-HB-Auth-Type": "token",
-          "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOlsiYWRtaW4iXSwiX2lkIjoiNWRmNmU3ZGQwOTQzY2Y0Nzc4MzYxZTBjIiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDA4JGVsL0dKRjJxNGhtSWVZdm4yM0Q3Sy5DQXB5SnltbFBCRUZkUE1oL0JvT2F4YjZLNnNBaXlTIiwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsInN0YXRlIjp0cnVlLCJjcmVhdGVUaW1lIjoiMjAxOS0xMi0xNlQwMjoxMTo0MS4zOThaIn0sImlhdCI6MTU3NjQ3NzI4MywiZXhwIjoxNTc2NTYzNjgzfQ.Ao74ch8Mk0Ywhl3Y9zlMZici0BRMIaUlD0KfaQTGT18"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOlsiYWRtaW4iXSwiX2lkIjoiNWRmNmU3ZGQwOTQzY2Y0Nzc4MzYxZTBjIiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDA4JGVsL0dKRjJxNGhtSWVZdm4yM0Q3Sy5DQXB5SnltbFBCRUZkUE1oL0JvT2F4YjZLNnNBaXlTIiwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsInN0YXRlIjp0cnVlLCJjcmVhdGVUaW1lIjoiMjAxOS0xMi0xNlQwMjoxMTo0MS4zOThaIn0sImlhdCI6MTU3NjQ3NzI4MywiZXhwIjoxNTc2NTYzNjgzfQ.Ao74ch8Mk0Ywhl3Y9zlMZici0BRMIaUlD0KfaQTGT18"
         }
       }
     }
