@@ -52,9 +52,6 @@ app.use(jwt({ secret: constType.SECRET }).unless({
     ]
 }));
 
-//  生成apidoc命令
-//  apidoc -i routes/ -o public/apidoc/
-
 // 跨域设置
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', req.headers.origin || '*');

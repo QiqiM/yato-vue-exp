@@ -38,8 +38,8 @@ router.get('/list', function (req, res) {
  *      "code" : "0",
  *      "data" : {
  *          "user" : {
- *                  "username": username
- *                },
+ *              "username": username
+ *              },
  *          "token" : "xxx"
  *      }
  *  }
@@ -70,7 +70,7 @@ router.post('/login', user.login);
  *      "email" : "yato@qq.com"
  *      "state" : true
  *      "role" : "admin"
- * }
+ *  }
  * @apiSampleRequest http://localhost:3000/user/register
  * @apiSuccessExample {type} Success-Response:
  * {
@@ -93,41 +93,26 @@ router.post('/register', user.register)
  * @apiSuccess {json} result
  * 
  * @apiParamExample  {type} Request-Example:
- *  {
- *      "username" : "yato",
+ * {
+ *      "username" : "yato"
  * }
  * @apiSampleRequest http://localhost:3000/user/info
  * @apiSuccessExample {type} Success-Response:
  * {
  *     code: 0
  *     data: {
-        username: "yato",
-        role: ["admin"],
-        createTime: "2019-12-16T02:11:41.398Z",
-        email: "test@qq.com"
-      }
+ *        username: "yato",
+ *        role: ["admin"],
+ *        createTime: "2019-12-16T02:11:41.398Z",
+ *        email: "test@qq.com"
+ *     }
  * }
- * 
+ * @apiErrorExample {type} Error-Response:
+ *   {
+ *     code: "errCode"
+ *     msg: "errMsg"
+ *   }
  */
-router.get("/info", function (req, res) {
-  let username = req.query.username;
-
-  daoUser.getModel().findOne({ username: username}, function (err, data) {
-    if (!data) {
-      gmLog.warn("not find user: %j", username);
-      return res.send({ code: constCode.FAIL });
-    }
-
-    res.json({
-      code: constCode.OK,
-      data: {
-        username: data.username,
-        role: data.role,
-        createTime: data.createTime,
-        email: data.email
-      }
-    })
-  })
-})
+router.get("/info", user.info)
 
 module.exports = router;

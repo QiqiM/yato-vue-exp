@@ -40,23 +40,39 @@ module.exports = {
             return;
         }
 
-        let user = await daoUser.getModel().findOne({username}).lean()
-        if(!user){
+        let user = await daoUser.getModel().findOne({ username }).lean()
+        if (!user) {
             gmLog.warn("not find user: %j", username);
-            return res.send({ code: constCode.FAIL , msg: '没有这个用户！'});
+            return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
         }
 
         if (!bcrypt.compareSync(password, user.password)) {
             res.json({ code: constCode.OK, msg: '密码错误！' })
             return;
         }
-        
+
         let token = jwt.sign({ user }, constType.SECRET, { expiresIn: constType.TOKEN_EXPIRE });
         delete user.password
 
         res.json({
             code: constCode.OK,
             data: { user, token }
+        })
+    },
+    info: async (req, res) => {
+        let username = req.query.username;
+
+        let user = await daoUser.getModel().findOne({ username }).lean();
+        if (!user) {
+            gmLog.warn("not find user: %j", username);
+            return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
+        }
+
+        delete user.password
+
+        res.json({
+            code: constCode.OK,
+            data: { user }
         })
     }
 }
