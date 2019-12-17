@@ -8,71 +8,95 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     register: async (req, res) => {
-        if (!req.body.username || !req.body.password) {
-            return res.send({ code: constCode.PARAM_ERROR });
+        try {
+            if (!req.body.username || !req.body.password) {
+                return res.send({ code: constCode.PARAM_ERROR });
+            }
+    
+            let { body: param, body: { username, password } } = req
+    
+            let user = await daoUser.getModel().findOne({ username });
+            if (user) {
+                return res.send({ code: constCode.FAIL, msg: '用户名已存在' });
+            }
+    
+            let cryrtpassword = bcrypt.hashSync(password, 8);
+            param.password = cryrtpassword;
+            let newUser = await daoUser.getModel().create(param)
+    
+            if (newUser) {
+                delete newUser._doc.password
+                gmLog.info("add user userInfo: %j", newUser);
+                return res.send({ code: constCode.OK, msg: '添加成功', data: newUser });
+            }
+    
+            appLog.warn("db user create err!")
+            res.status(422).send({ code: constCode.FAIL, msg: '添加失败', data: err.message });
+        } catch (e) {
+            appLog.error("register db err :%j",e.message)
+            res.json({
+                code: constCode.FAIL,
+                data: { msg: '系统错误' }
+            })
         }
-
-        let { body: param, body: { username, password } } = req
-
-        let user = await daoUser.getModel().findOne({ username });
-        if (user) {
-            return res.send({ code: constCode.FAIL, msg: '用户名已存在' });
-        }
-
-        let cryrtpassword = bcrypt.hashSync(password, 8);
-        param.password = cryrtpassword;
-        let newUser = await daoUser.getModel().create(param)
-
-        if (newUser) {
-            delete newUser._doc.password
-            gmLog.info("add user userInfo: %j", newUser);
-            return res.send({ code: constCode.OK, msg: '添加成功', data: newUser });
-        }
-
-        appLog.warn("db user create err!")
-        res.status(422).send({ code: constCode.FAIL, msg: '添加失败', data: err.message });
     },
     login: async (req, res) => {
-        let { username, password } = req.body
+        try {
+            let { username, password } = req.body
 
-        if (!username || !password) {
-            res.json({ code: constCode.PARAM_ERROR })
-            return;
+            if (!username || !password) {
+                res.json({ code: constCode.PARAM_ERROR })
+                return;
+            }
+
+            let user = await daoUser.getModel().findOne({ username }).lean()
+            if (!user) {
+                gmLog.warn("not find user: %j", username);
+                return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
+            }
+
+            if (!bcrypt.compareSync(password, user.password)) {
+                res.json({ code: constCode.OK, msg: '密码错误！' })
+                return;
+            }
+
+            let token = jwt.sign({ user }, constType.SECRET, { expiresIn: constType.TOKEN_EXPIRE });
+            delete user.password
+
+            res.json({
+                code: constCode.OK,
+                data: { user, token }
+            })
+        } catch (e) {
+            appLog.error("login db err :%j",e.message)
+            res.json({
+                code: constCode.FAIL,
+                data: { msg: '系统错误' }
+            })
         }
-
-        let user = await daoUser.getModel().findOne({ username }).lean()
-        if (!user) {
-            gmLog.warn("not find user: %j", username);
-            return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
-        }
-
-        if (!bcrypt.compareSync(password, user.password)) {
-            res.json({ code: constCode.OK, msg: '密码错误！' })
-            return;
-        }
-
-        let token = jwt.sign({ user }, constType.SECRET, { expiresIn: constType.TOKEN_EXPIRE });
-        delete user.password
-
-        res.json({
-            code: constCode.OK,
-            data: { user, token }
-        })
     },
     info: async (req, res) => {
-        let username = req.query.username;
+        try {
+            let username = req.query.username;
 
-        let user = await daoUser.getModel().findOne({ username }).lean();
-        if (!user) {
-            gmLog.warn("not find user: %j", username);
-            return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
+            let user = await daoUser.getModel().findOne({ username }).lean();
+            if (!user) {
+                gmLog.warn("not find user: %j", username);
+                return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
+            }
+    
+            delete user.password
+    
+            res.json({
+                code: constCode.OK,
+                data: { user }
+            })
+        } catch (e) {
+            appLog.error("get userInfo db err :%j",e.message)
+            res.json({
+                code: constCode.FAIL,
+                data: { msg: '系统错误' }
+            })
         }
-
-        delete user.password
-
-        res.json({
-            code: constCode.OK,
-            data: { user }
-        })
     }
 }
