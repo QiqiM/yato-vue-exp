@@ -106,7 +106,10 @@ module.exports = {
         }
 
         [err, result] = await to(daoUser.getModel().find(where, { password: 0 }).
-            skip((page_no - 1) * page_size).limit(page_size).sort({ timestamp: -1 }));
+            skip(parseInt((page_no - 1) * page_size)).limit(parseInt(page_size)).sort({ timestamp: -1 }));
+
+        if (!!err)
+            return utils.respErrorHandle(err, res);
 
         [err, total] = await to(daoUser.getModel().countDocuments(where));
 
@@ -160,10 +163,10 @@ module.exports = {
             gmLog.debug("param error")
             return res.json({ code: constCode.FAIL, data: { msg: "请填写正确的uid" } })
         }
-        let deleteUser,err
+        let deleteUser, err
 
-        [deleteUser,err] = await to(daoUser.getModel().deleteOne({ _id }))
-        if(err)
+        [deleteUser, err] = await to(daoUser.getModel().deleteOne({ _id }))
+        if (err)
             return utils.respErrorHandle(err, res);
 
         gmLog.debug(deleteUser)

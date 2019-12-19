@@ -16,7 +16,6 @@ const user = require('../ctrl/users')
  * @apiParam {string} password 密码
  * @apiParam {string} state 状态
  * @apiParam {string} email 邮箱
- * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {
  *      "code" : "0",
@@ -38,7 +37,6 @@ router.post('/login', user.login);
  * @apiDescription 用户登出
  * @apiName logOut
  * @apiGroup user
- * @apiSuccess {json} result
  * @apiSuccessExample {json} Success-Response:
  *  {
  *      "code" : "0",
@@ -58,10 +56,10 @@ router.post('/logOut', user.logOut);
  * @apiParam  {String} username 用户名
  * @apiParam  {String} password 密码
  * @apiParam  {String} email 邮箱
- * @apiParam  {String} state 状态
+ * @apiParam  {Boolean} state 状态
  * @apiParam  {String} role 角色
+ * @apiParam  {String} fullname 全名
  * 
- * @apiSuccess {json} result
  * 
  * @apiParamExample  {type} Request-Example:
  *  {
@@ -70,6 +68,7 @@ router.post('/logOut', user.logOut);
  *      "email" : "yato@qq.com"
  *      "state" : true
  *      "role" : "admin"
+ *      "fullname": "超级管理员"
  *  }
  * @apiSampleRequest http://localhost:3000/user/register
  * @apiSuccessExample {type} Success-Response:
@@ -90,7 +89,6 @@ router.post('/register', user.register)
  * @apiVersion  1.0.0
  * @apiParam  {String} username 用户名
  * 
- * @apiSuccess {json} result
  * 
  * @apiParamExample  {type} Request-Example:
  * {
@@ -126,7 +124,6 @@ router.get("/info", user.info)
  * @apiParam  {String} page_size 条数
  * @apiParam  {String} phone     电话号码
  * 
- * @apiSuccess {json} result
  * 
  * @apiParamExample  {type} Request-Example:
  * {
