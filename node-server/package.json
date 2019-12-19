@@ -21,6 +21,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.1.0",
+    "mongodb": "^3.4.0",
     "mongoose": "^5.7.13",
     "morgan": "~1.9.1",
     "mysql": "^2.17.1"
@@ -36,7 +37,7 @@
         "headers": {
           "X-HB-Client-Type": "ayb-ios",
           "X-HB-Auth-Type": "token",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOlsiYWRtaW4iXSwiX2lkIjoiNWRmNmU3ZGQwOTQzY2Y0Nzc4MzYxZTBjIiwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDA4JGVsL0dKRjJxNGhtSWVZdm4yM0Q3Sy5DQXB5SnltbFBCRUZkUE1oL0JvT2F4YjZLNnNBaXlTIiwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsInN0YXRlIjp0cnVlLCJjcmVhdGVUaW1lIjoiMjAxOS0xMi0xNlQwMjoxMTo0MS4zOThaIn0sImlhdCI6MTU3NjQ3NzI4MywiZXhwIjoxNTc2NTYzNjgzfQ.Ao74ch8Mk0Ywhl3Y9zlMZici0BRMIaUlD0KfaQTGT18"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZjZlN2RkMDk0M2NmNDc3ODM2MWUwYyIsInJvbGUiOlsiYWRtaW4iXSwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDA4JGVsL0dKRjJxNGhtSWVZdm4yM0Q3Sy5DQXB5SnltbFBCRUZkUE1oL0JvT2F4YjZLNnNBaXlTIiwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsInN0YXRlIjp0cnVlLCJjcmVhdGVUaW1lIjoiMjAxOS0xMi0xNlQwMjoxMTo0MS4zOThaIn0sImlhdCI6MTU3NjczNTY0MCwiZXhwIjoxNTc2ODIyMDQwfQ.wKG_6462X5aHZKuTQcaXTr8wif0hVW0tNZDtOQxSA1k"
         }
       }
     }

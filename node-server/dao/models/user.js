@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username: { type: String, unique: true },   // unique 以此字段为唯一索引
     password: { type: String },
+    fullname: { type: String },
     email: { type: String },
     phone: { type: String },
     state: { type: Boolean },
@@ -16,8 +17,12 @@ const userSchema = new Schema({
     createTime: { type: Date, default: Date.now }
 }, { collation: "user", versionKey: false, bufferCommands: false, usePushEach: true });
 
-userSchema.statics.findByUsernameAndPwd = function (username, pwd, cb) {
-    this.findOne({ username: username, password: pwd }, cb)
+userSchema.statics.findByUsername = function (where, cb) {
+    this.findOne(where, cb)
+}
+
+userSchema.statics.testCount = function (where, cb) {
+    return this.countDocuments(where, cb)
 }
 
 let _model;
