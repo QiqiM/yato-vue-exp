@@ -99,6 +99,8 @@ module.exports = {
     },
     list: async (req, res) => {
         let { page_no, page_size, phone } = req.body;
+        page_size = parseInt(page_size) < 1 ? 1 : parseInt(page_size);
+        page_no = parseInt(page_no) < 0 ? 0 : parseInt(page_no);
         let err, result, total;
         let where = {}
         if (phone) {
@@ -106,7 +108,7 @@ module.exports = {
         }
 
         [err, result] = await to(daoUser.getModel().find(where, { password: 0 }).
-            skip(parseInt((page_no - 1) * page_size)).limit(parseInt(page_size)).sort({ timestamp: -1 }));
+            skip((page_no - 1) * page_size).limit(page_size).sort({ timestamp: -1 }));
 
         if (!!err)
             return utils.respErrorHandle(err, res);
