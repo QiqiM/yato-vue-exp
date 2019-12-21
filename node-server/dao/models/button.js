@@ -9,9 +9,9 @@ const buttonSchema = new Schema({
     code: { type: String, required: true },   // unique 以此字段为唯一索引
     name: { type: String, required: true },
     desc: { type: String },
-    state: { type: Boolean },
+    state: { type: Boolean, default: true },
     timeStamp: { type: Date, default: Date.now }
-}, { collation: "user", versionKey: false, bufferCommands: false, usePushEach: true });
+}, { collation: "button", versionKey: false, bufferCommands: false, usePushEach: true });
 
 let _model;
 let getModel = function () {

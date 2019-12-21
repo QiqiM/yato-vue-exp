@@ -1,10 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const gmLog = require("../utils/logger")("gm")
-const daoUser = require("../dao/models/user")
-const constCode = require("../consts/constCode")
 const user = require('../ctrl/users')
-
 
 /**
  * 
