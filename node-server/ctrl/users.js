@@ -64,7 +64,7 @@ module.exports = {
             return;
         }
 
-        let token = jwt.sign({ user }, constType.SECRET, { expiresIn: constType.TOKEN_EXPIRE });
+        let token = jwt.sign({ username: user.username }, constType.SECRET, { expiresIn: constType.TOKEN_EXPIRE });
         delete user.password
 
         res.json({

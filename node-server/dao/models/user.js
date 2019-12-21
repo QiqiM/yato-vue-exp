@@ -2,12 +2,11 @@ const gmLogger = require('../../utils/logger')('gm');
 const appLogger = require('../../utils/logger')('app');
 const mongoose = require('mongoose');
 const mongodb = require('../mongodb');
-const utils = require('../../utils/utils')
 const Schema = mongoose.Schema;
 
 // 创建Schema
 const userSchema = new Schema({
-    username: { type: String, unique: true },   // unique 以此字段为唯一索引
+    username: { type: String, unique: true, required: true },   // unique 以此字段为唯一索引
     password: { type: String },
     fullname: { type: String },
     email: { type: String },

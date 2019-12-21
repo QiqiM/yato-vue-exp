@@ -1,10 +1,11 @@
 const crypto = require("crypto");
 const appLog = require("../utils/logger")("app")
 const constCode = require('../consts/constCode')
+const constType = require('../consts/constType')
+const daoUser = require("../dao/models/user")
+const jwt = require('express-jwt');
+
 const utils = module.exports;
-
-
-
 /**
  *
  * @param ymd
@@ -29,9 +30,9 @@ utils.genTimeId = function () {
 
 
 utils.invokeCallback = function (cb, ...args) {
-    if(typeof cb === "function"){
+    if (typeof cb === "function") {
         cb(...args);
-    }else {
+    } else {
         throw new Error("cb is not a function!");
     }
 };
@@ -39,7 +40,7 @@ utils.invokeCallback = function (cb, ...args) {
 utils.genSqlInsert = function (table, fields) {
     let values = fields.map(prop => "?").join(",");
     let fieldlst = fields.join(",");
-    let str =  ["insert","into", table, "(",fieldlst, ")","values","(", values, ")"];
+    let str = ["insert", "into", table, "(", fieldlst, ")", "values", "(", values, ")"];
     return str.join(" ");
 };
 
@@ -51,7 +52,7 @@ utils.genSqlUpdate = function (table, fields, cond) {
 };
 
 utils.resolveSql = function (fields, value) {
-    return fields.map(field =>{
+    return fields.map(field => {
         return value[field]
     });
 };
@@ -88,10 +89,50 @@ utils.random = function (len) {
     return Math.floor(Math.random() * len);
 }
 
-utils.respErrorHandle = function(err, resp){
-    appLog.error('process requset has error :%j',err.stack);
+utils.respErrorHandle = function (err, resp) {
+    appLog.error('process requset has error :%j', err.stack);
     resp.json({
         code: constCode.FAIL,
         data: { msg: '系统错误' }
     })
+}
+
+// 自定义token校验 ，未做完
+utils.checkAndRefreshToken = async function (req, res, next) {
+    let url = req.url;
+    // noinspection JSAnnotator
+    if (!constType.URL_YES_PASS.includes(url)) {
+        let token;
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            token = req.headers.authorization.split(' ')[1];
+        } else if (req.query && req.query.token) {
+            token = req.query.token;
+        }
+        if (token == '') {
+            // 直接抛出错误
+            return res.status(401).json({
+                code: constCode.AUTH_FAIL,
+                data: "暂未登录"
+            })
+        }
+        try {
+            //    验证token是否过期(???)
+            let a = 1
+            let { str = '' } = await jwt.verify(token, constType.SECRET);
+            //    验证token与账号是否匹配
+            let res = await daoUser.getModel().find({ user_id: str, token })
+            if (res.length == 0) {
+                return res.status(401).json({
+                    code: constCode.AUTH_FAIL,
+                    data: "登录过期，请重新登录"
+                })
+            }
+        } catch (e) {
+            return res.status(500).json({
+                code: constCode.AUTH_FAIL,
+                data: "服务器异常请稍后再试"
+            })
+        }
+    }
+    await next();
 }

@@ -13,6 +13,8 @@ const mysql = require("./dao/mysql/index").mysql;
 const mongodb = require("./dao/mongodb")
 const routes = require('./routes/index')
 const constType = require('./consts/constType')
+const constCode = require('./consts/constCode')
+const utils = require('./utils/utils')
 
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
@@ -44,6 +46,7 @@ app.use(bodyParse.urlencoded({ extended: false }))
 app.use(bodyParse.json())
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(jwt({ secret: constType.SECRET }).unless({
   path: [
     '/user/login',
@@ -51,6 +54,9 @@ app.use(jwt({ secret: constType.SECRET }).unless({
     '/apidoc*'
   ]
 }));
+
+// 自定义token校验
+// app.use(utils.checkAndRefreshToken)
 
 // 跨域设置
 app.all('*', function (req, res, next) {
@@ -90,6 +96,10 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+  if (err.name === 'UnauthorizedError') {   
+    //  这个需要根据自己的业务逻辑来处理（ 具体的err值 请看下面）
+    return res.status(401).send({code: constCode.LOGIN.AUTH_ERROR,msg:'invalid token'});
+  }
   // render the error page
   res.status(err.status || 500);
   appLogger.error("path:%j", req.path);

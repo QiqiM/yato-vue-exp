@@ -37,7 +37,7 @@
         "headers": {
           "X-HB-Client-Type": "ayb-ios",
           "X-HB-Auth-Type": "token",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVkZjZlN2RkMDk0M2NmNDc3ODM2MWUwYyIsInJvbGUiOlsiYWRtaW4iXSwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiJDJhJDA4JGVsL0dKRjJxNGhtSWVZdm4yM0Q3Sy5DQXB5SnltbFBCRUZkUE1oL0JvT2F4YjZLNnNBaXlTIiwiZW1haWwiOiJ0ZXN0QHFxLmNvbSIsInN0YXRlIjp0cnVlLCJjcmVhdGVUaW1lIjoiMjAxOS0xMi0xNlQwMjoxMTo0MS4zOThaIn0sImlhdCI6MTU3NjczNTY0MCwiZXhwIjoxNTc2ODIyMDQwfQ.wKG_6462X5aHZKuTQcaXTr8wif0hVW0tNZDtOQxSA1k"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTc2OTM3ODkwLCJleHAiOjE1Nzk1Mjk4OTB9.ONmAhiF6B6GD5JxdqgZAoN05JuDeohkGrtiWfHO-UmY"
         }
       }
     }
