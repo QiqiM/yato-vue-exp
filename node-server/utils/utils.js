@@ -4,6 +4,7 @@ const constCode = require('../consts/constCode')
 const constType = require('../consts/constType')
 const daoUser = require("../dao/models/user")
 const jwt = require('express-jwt');
+const mongoose = require('mongoose')
 
 const utils = module.exports;
 /**
@@ -95,6 +96,10 @@ utils.respErrorHandle = function (err, resp) {
         code: constCode.FAIL,
         data: { msg: '系统错误' }
     })
+}
+
+utils.formatObjectId = function (str) {
+    return mongoose.Types.ObjectId(str);
 }
 
 // 自定义token校验 ，未做完

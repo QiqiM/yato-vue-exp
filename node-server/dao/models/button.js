@@ -11,7 +11,7 @@ const buttonSchema = new Schema({
     desc: { type: String },
     state: { type: Boolean, default: true },
     timeStamp: { type: Date, default: Date.now }
-}, { collation: "button", versionKey: false, bufferCommands: false, usePushEach: true });
+}, { versionKey: false, bufferCommands: false, usePushEach: true });
 
 let _model;
 let getModel = function () {

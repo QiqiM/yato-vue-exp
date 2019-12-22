@@ -14,7 +14,8 @@ const userSchema = new Schema({
     state: { type: Boolean },
     role: { type: Array },
     createTime: { type: Date, default: Date.now }
-}, { collation: "user", versionKey: false, bufferCommands: false, usePushEach: true });
+}, { versionKey: false, bufferCommands: false, usePushEach: true });
+//  collation: "user" ，作用不太清楚，4.2版本这样指定不对 ，会导致删除错误
 
 userSchema.statics.findByUsername = function (where, cb) {
     this.findOne(where, cb)

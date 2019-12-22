@@ -12,7 +12,7 @@ const roleSchema = new Schema({
     state: { type: Boolean },
     permissions: { type: Array },
     timeStamp: { type: Date, default: Date.now }
-}, { collation: "role", versionKey: false, bufferCommands: false, usePushEach: true });
+}, { versionKey: false, bufferCommands: false, usePushEach: true });
 
 let _model;
 let getModel = function () {

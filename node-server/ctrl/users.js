@@ -166,8 +166,9 @@ module.exports = {
             return res.json({ code: constCode.FAIL, data: { msg: "请填写正确的uid" } })
         }
         let deleteUser, err
+        _id = utils.formatObjectId(_id);
 
-        [deleteUser, err] = await to(daoUser.getModel().deleteOne({ _id }))
+        [err, deleteUser] = await to(daoUser.getModel().deleteOne({ _id }))
         if (err)
             return utils.respErrorHandle(err, res);
 

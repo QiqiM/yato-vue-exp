@@ -12,7 +12,7 @@ const permissionSchema = new Schema({
     state: { type: Boolean },
     permission: { type: Array },
     timeStamp: { type: Date, default: Date.now }
-}, { collation: "permission", versionKey: false, bufferCommands: false, usePushEach: true });
+}, { versionKey: false, bufferCommands: false, usePushEach: true });
 
 let _model;
 let getModel = function () {

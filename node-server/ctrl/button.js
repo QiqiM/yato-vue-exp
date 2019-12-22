@@ -93,11 +93,14 @@ module.exports = {
         }
         let deleteButton, err
 
-        [deleteButton, err] = await to(daoButton.getModel().deleteOne({ "_id":_id }))
+        _id = utils.formatObjectId(_id);
+
+        [err, deleteButton] = await to(daoButton.getModel().deleteOne({_id}))
+
         if (err)
             return utils.respErrorHandle(err, res);
 
-        gmLog.debug("====%j",deleteButton)
+        gmLog.debug(deleteUser)
         if (deleteButton.deletedCount === 1) {
             return res.json({ code: constCode.OK, data: { msg: "删除成功" } })
         } else {
