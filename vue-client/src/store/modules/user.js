@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getButton } from '@/api/system'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getId, setId, removeId } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import store from '../index'
 
@@ -11,7 +12,8 @@ const state = {
   introduction: '',
   roles: [],
   permissions: [],
-  buttons: {}
+  buttons: {},
+  _id : getId(),
 }
 
 const mutations = {
@@ -35,6 +37,9 @@ const mutations = {
   },
   SET_BUTTON: (state, buttons) => {
     state.buttons = buttons
+  },
+  SET_ID: (state, id) => {
+    state._id = id
   }
 }
 
@@ -48,7 +53,9 @@ const actions = {
         console.log('login', 2222)
         const { data } = response
         commit('SET_TOKEN', data.token)
+        commit('SET_ID', data.user._id)
         setToken(data.token)
+        setId(data.user._id)
         resolve()
       }).catch(error => {
         reject(error)
@@ -60,7 +67,7 @@ const actions = {
   getInfo({ commit, state }) {
     store.dispatch('user/getButton')
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state._id).then(response => {
         const { data } = response
 
         if (!data) {
@@ -112,7 +119,9 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_ID', '')
         removeToken()
+        removeId()
         resetRouter()
         resolve()
       }).catch(error => {
@@ -126,7 +135,9 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_ID', '')
       removeToken()
+      removeId()
       resolve()
     })
   },

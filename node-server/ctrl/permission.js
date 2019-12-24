@@ -52,7 +52,7 @@ module.exports = {
         gmLog.info("get permission list success")
         res.json({
             code: constCode.OK,
-            data: { item: result, total }
+            data: { items: result, total }
         })
     },
     update: async (req, res) => {

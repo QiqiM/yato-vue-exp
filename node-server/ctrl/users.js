@@ -1,6 +1,7 @@
 const gmLog = require("../utils/logger")("gm")
 const appLog = require("../utils/logger")("app")
 const daoUser = require("../dao/models/user")
+const daoRole = require("../dao/models/role")
 const constCode = require("../consts/constCode")
 const constType = require('../consts/constType')
 const jwt = require('jsonwebtoken');
@@ -77,24 +78,33 @@ module.exports = {
             code: constCode.OK,
         })
     },
-    info: async (req, res) => {
-        let username = req.query.username;
+    getUserInfo: async (req, res) => {
+        let _id = req.query._id;
         let err, user;
 
-        [err, user] = await to(daoUser.getModel().findOne({ username }).lean());
+        [err, user] = await to(daoUser.getModel().findOne({ _id }).lean());
         if (!!err)
             return utils.respErrorHandle(err, res);
 
         if (!user) {
-            gmLog.warn("not find user: %j", username);
+            gmLog.warn("not find user id: %j", _id);
             return res.send({ code: constCode.FAIL, msg: '没有这个用户！' });
         }
 
         delete user.password
 
+        let per;
+        [err,per] = await to(daoRole.getModel().findOne({'code':user.role[0]},'permissions'));
+        // gmLog.info("per info:%j",per)
+
         res.json({
             code: constCode.OK,
-            data: { user }
+            data: { 
+                roles: user.role,
+                permissions:per.permissions,
+                avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+                name: user.username,
+             }
         })
     },
     list: async (req, res) => {
@@ -128,7 +138,7 @@ module.exports = {
 
         res.json({
             code: constCode.OK,
-            data: { item: result, total }
+            data: { items: result, total }
         })
     },
     update: async (req, res) => {

@@ -107,7 +107,7 @@ router.post('/register', user.register)
  *     msg: "errMsg"
  *   }
  */
-router.get("/info", user.info)
+router.post("/info", user.getUserInfo)
 
 /**
  * 
